@@ -62,38 +62,6 @@ describe('Freebox', function() {
 
   })
 
-  describe('#api_url', function() {
-
-    beforeEach(function() {
-      nock("http://mafreebox.freebox.fr")
-        .get("/api_version")
-        .reply(200, {
-          api_base_url: "/api/",
-          api_version: "3.0",
-          device_name: "Freebox Server",
-          device_type: "FreeboxServer1,1"
-        });
-    })
-
-    it('should return a fulfilled promise', function() {
-        expect(freebox.api_url()).to.be.fulfilled;
-    })
-
-    it('should be a string', function() {
-        freebox.api_url().then(function(url) {
-          expect(url).to.be.a("string")
-        })
-    })
-
-    it('should be the freebox api URL', function(done) {
-        freebox.api_url().then(function(url) {
-          expect(url).to.be.equal("http://mafreebox.freebox.fr/api/v3")
-          done()
-        })
-    })
-
-  })
-
   describe('#authorize', function() {
 
     var authRequestParams = {

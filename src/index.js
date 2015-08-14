@@ -12,13 +12,6 @@ Freebox.prototype.api_version = function() {
   return rp({ url: this.freebox_url+'/api_version', json: true })
 }
 
-Freebox.prototype.api_url = function() {
-  var base_url = this.freebox_url;
-  return this.api_version().then(function(version) {
-    return base_url + version.api_base_url + 'v' + major_api_version(version.api_version)
-  });
-}
-
 Freebox.prototype.authorize = function(params) {
   return rp({
     method: "POST",
