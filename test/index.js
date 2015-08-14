@@ -94,4 +94,144 @@ describe('Freebox', function() {
 
   })
 
+  describe('#authorize', function() {
+
+    var authRequestParams = {
+      app_id: 'fr.freebox.testapp',
+      app_name: 'Test App',
+      app_version: '0.0.7',
+      device_name: 'Pc de Xavier'
+    }
+
+    beforeEach(function() {
+      nock("http://mafreebox.freebox.fr")
+        .post("/login/authorize", authRequestParams)
+        .reply(200, {
+          success: true,
+          result: {
+            app_token: 'dumptoken',
+            track_id: 1
+          }
+        });
+    })
+
+    it('should return a fulfilled promise', function() {
+      var result = freebox.authorize(authRequestParams)
+
+      expect(result).to.be.fulfilled
+    })
+
+    it('should be an object', function() {
+      var result = freebox.authorize(authRequestParams)
+
+      result.then(function(value) {
+        expect(value).to.be.an("object")
+      })
+    })
+
+    it('should have a success property', function() {
+      var result = freebox.authorize(authRequestParams)
+
+      result.then(function(value) {
+        expect(value).to.have.a.property("success")
+      })
+    })
+
+    it('should have a result property', function() {
+      var result = freebox.authorize(authRequestParams)
+
+      result.then(function(value) {
+        expect(value).to.have.a.property("result")
+      })
+    })
+
+    it('should have a result.app_token property', function() {
+      var result = freebox.authorize(authRequestParams)
+
+      result.then(function(value) {
+        expect(value.result).to.have.a.property("app_token")
+      })
+    })
+
+    it('should have a result.track_id property', function() {
+      var result = freebox.authorize(authRequestParams)
+
+      result.then(function(value) {
+        expect(value.result).to.have.a.property("track_id")
+      })
+    })
+
+  })
+
+  describe('#track_authorization_progress', function() {
+
+    beforeEach(function() {
+      nock("http://mafreebox.freebox.fr")
+        .get("/login/authorize/1")
+        .reply(200, {
+          success: true,
+          result: {
+            status: 'pending',
+            challenge: 'dumbChallenge',
+            password_salt: 'dumbSalt'
+          }
+        });
+    })
+
+    it('should return a fulfilled promise', function() {
+      var result = freebox.track_authorization_progress(1)
+
+      expect(result).to.be.fulfilled
+    })
+
+    it('should be an object', function() {
+      var result = freebox.track_authorization_progress(1)
+
+      result.then(function(value) {
+        expect(value).to.be.an("object")
+      })
+    })
+
+    it('should have a success property', function() {
+      var result = freebox.track_authorization_progress(1)
+
+      result.then(function(value) {
+        expect(value).to.have.a.property("success")
+      })
+    })
+
+    it('should have a result property', function() {
+      var result = freebox.track_authorization_progress(1)
+
+      result.then(function(value) {
+        expect(value).to.have.a.property("result")
+      })
+    })
+
+    it('should have a result.status property', function() {
+      var result = freebox.track_authorization_progress(1)
+
+      result.then(function(value) {
+        expect(value.result).to.have.a.property("status")
+      })
+    })
+
+    it('should have a result.challenge property', function() {
+      var result = freebox.track_authorization_progress(1)
+
+      result.then(function(value) {
+        expect(value.result).to.have.a.property("challenge")
+      })
+    })
+
+    it('should have a result.password_salt property', function() {
+      var result = freebox.track_authorization_progress(1)
+
+      result.then(function(value) {
+        expect(value.result).to.have.a.property("password_salt")
+      })
+    })
+
+  })
+
 })

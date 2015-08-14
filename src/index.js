@@ -19,4 +19,18 @@ Freebox.prototype.api_url = function() {
   });
 }
 
+Freebox.prototype.authorize = function(params) {
+  return rp({
+    method: "POST",
+    body: params,
+    json: true,
+    url: this.freebox_url+'/login/authorize'
+  })
+}
+
+Freebox.prototype.track_authorization_progress = function(id) {
+  return rp({ url: this.freebox_url+'/login/authorize/'+id, json: true })
+}
+
+
 module.exports = Freebox;
