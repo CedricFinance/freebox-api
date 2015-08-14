@@ -9,7 +9,7 @@ describe('Freebox', function() {
   var freebox;
 
   before(function() {
-    freebox = new Freebox();
+    freebox = new Freebox({ api_path: "/api/v3" });
   })
 
   describe('#api_version', function() {
@@ -73,7 +73,7 @@ describe('Freebox', function() {
 
     beforeEach(function() {
       nock("http://mafreebox.freebox.fr")
-        .post("/login/authorize", authRequestParams)
+        .post("/api/v3/login/authorize", authRequestParams)
         .reply(200, {
           success: true,
           result: {
@@ -135,7 +135,7 @@ describe('Freebox', function() {
 
     beforeEach(function() {
       nock("http://mafreebox.freebox.fr")
-        .get("/login/authorize/1")
+        .get("/api/v3/login/authorize/1")
         .reply(200, {
           success: true,
           result: {

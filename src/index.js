@@ -4,8 +4,10 @@ function major_api_version(version) {
   return version.split(".")[0];
 }
 
-function Freebox() {
+function Freebox(params) {
   this.freebox_url = 'http://mafreebox.freebox.fr';
+
+  this.api_url = this.freebox_url+params.api_path;
 }
 
 Freebox.prototype.api_version = function() {
@@ -17,12 +19,12 @@ Freebox.prototype.authorize = function(params) {
     method: "POST",
     body: params,
     json: true,
-    url: this.freebox_url+'/login/authorize'
+    url: this.api_url+'/login/authorize'
   })
 }
 
 Freebox.prototype.track_authorization_progress = function(id) {
-  return rp({ url: this.freebox_url+'/login/authorize/'+id, json: true })
+  return rp({ url: this.api_url+'/login/authorize/'+id, json: true })
 }
 
 
