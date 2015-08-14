@@ -9,7 +9,7 @@ function Freebox() {
 }
 
 Freebox.prototype.api_version = function() {
-  return rp({ url: this.freebox_url+'/api_version', transform: JSON.parse })
+  return rp({ url: this.freebox_url+'/api_version', json: true })
 }
 
 Freebox.prototype.api_url = function() {
