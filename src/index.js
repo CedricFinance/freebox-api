@@ -27,8 +27,8 @@ Freebox.prototype.track_authorization_progress = function(id) {
   return rp({ url: this.api_url+'/login/authorize/'+id, json: true })
 }
 
-Freebox.prototype.login = function() {
-  return rp({ url: this.api_url+'/login', json: true })
+Freebox.prototype.login = function(session_token) {
+  return rp({ url: this.api_url+'/login', json: true, headers: {'X-Fbx-App-Auth': session_token} })
 }
 
 Freebox.prototype.openSession = function(params) {
