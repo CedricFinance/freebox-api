@@ -77,7 +77,7 @@ describe('Freebox', function() {
         .reply(200, {
           success: true,
           result: {
-            app_token: 'dumptoken',
+            app_token: 'dumbtoken',
             track_id: 1
           }
         });
