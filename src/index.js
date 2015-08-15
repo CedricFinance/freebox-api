@@ -44,4 +44,8 @@ Freebox.prototype.openSession = function(params) {
   })
 }
 
+Freebox.prototype.call_log = function(session_token) {
+  return rp({ url: this.api_url+'/call/log/', json: true, headers: {'X-Fbx-App-Auth': session_token} })
+}
+
 module.exports = Freebox;

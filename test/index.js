@@ -341,4 +341,140 @@ describe('Freebox', function() {
 
   })
 
+  describe('#call_log', function() {
+
+    var session_token = 'dumbtoken';
+
+    beforeEach(function() {
+      nock("http://mafreebox.freebox.fr")
+        .get("/api/v3/call/log/")
+        .reply(200, {
+          "success": true,
+          "result" :  [ { number: '0102030405',
+            type: 'accepted',
+            id: 1,
+            duration: 49,
+            datetime: 1439281517,
+            contact_id: 0,
+            line_id: 0,
+            name: '0102030405',
+            new: true }
+          ]
+        });
+    })
+
+    it('should return a fulfilled promise', function() {
+      var result = freebox.call_log(session_token);
+
+      expect(result).to.be.fulfilled
+    })
+
+
+    it('should be an object', function(done) {
+      var result = freebox.call_log(session_token);
+
+      result.then(function(value) {
+        expect(value).to.be.an("object")
+        done()
+      }).catch(done);
+    })
+
+    it('should have a success property', function() {
+      var result = freebox.call_log(session_token);
+
+      result.then(function(value) {
+        expect(value).to.have.a.property("success")
+      })
+    })
+
+    it('should have a result property', function() {
+      var result = freebox.call_log(session_token);
+
+      result.then(function(value) {
+        expect(value).to.have.a.property("result")
+      })
+    })
+
+    it('should have a result property to be an array', function() {
+      var result = freebox.call_log(session_token);
+
+      result.then(function(value) {
+        expect(value.result).to.be.an("array")
+      })
+    })
+
+    it('should have a result[0].id property', function() {
+      var result = freebox.call_log(session_token);
+
+      result.then(function(value) {
+        expect(value.result[0]).to.have.a.property("id")
+      })
+    })
+
+    it('should have a result[0].type property', function() {
+      var result = freebox.call_log(session_token);
+
+      result.then(function(value) {
+        expect(value.result[0]).to.have.a.property("type")
+      })
+    })
+
+    it('should have a result[0].number property', function() {
+      var result = freebox.call_log(session_token);
+
+      result.then(function(value) {
+        expect(value.result[0]).to.have.a.property("number")
+      })
+    })
+
+    it('should have a result[0].duration property', function() {
+      var result = freebox.call_log(session_token);
+
+      result.then(function(value) {
+        expect(value.result[0]).to.have.a.property("duration")
+      })
+    })
+
+    it('should have a result[0].datetime property', function() {
+      var result = freebox.call_log(session_token);
+
+      result.then(function(value) {
+        expect(value.result[0]).to.have.a.property("datetime")
+      })
+    })
+
+    it('should have a result[0].contact_id property', function() {
+      var result = freebox.call_log(session_token);
+
+      result.then(function(value) {
+        expect(value.result[0]).to.have.a.property("contact_id")
+      })
+    })
+
+    it('should have a result[0].line_id property', function() {
+      var result = freebox.call_log(session_token);
+
+      result.then(function(value) {
+        expect(value.result[0]).to.have.a.property("line_id")
+      })
+    })
+
+    it('should have a result[0].name property', function() {
+      var result = freebox.call_log(session_token);
+
+      result.then(function(value) {
+        expect(value.result[0]).to.have.a.property("name")
+      })
+    })
+
+    it('should have a result[0].new property', function() {
+      var result = freebox.call_log(session_token);
+
+      result.then(function(value) {
+        expect(value.result[0]).to.have.a.property("new")
+      })
+    })
+
+  })
+
 })
