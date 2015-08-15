@@ -202,4 +202,66 @@ describe('Freebox', function() {
 
   })
 
+  describe('#login', function() {
+
+    beforeEach(function() {
+      nock("http://mafreebox.freebox.fr")
+        .get("/api/v3/login")
+        .reply(200, {
+          "success": true,
+          "result": {
+              "logged_in": false,
+              "challenge": "VzhbtpR4r8CLaJle2QgJBEkyd8JPb0zL"
+          }
+        });
+    })
+
+    it('should return a fulfilled promise', function() {
+      var result = freebox.login()
+
+      expect(result).to.be.fulfilled
+    })
+
+    it('should be an object', function() {
+      var result = freebox.login()
+
+      result.then(function(value) {
+        expect(value).to.be.an("object")
+      })
+    })
+
+    it('should have a success property', function() {
+      var result = freebox.login()
+
+      result.then(function(value) {
+        expect(value).to.have.a.property("success")
+      })
+    })
+
+    it('should have a result property', function() {
+      var result = freebox.login()
+
+      result.then(function(value) {
+        expect(value).to.have.a.property("result")
+      })
+    })
+
+    it('should have a result.logged_in property', function() {
+      var result = freebox.login()
+
+      result.then(function(value) {
+        expect(value.result).to.have.a.property("logged_in")
+      })
+    })
+
+    it('should have a result.challenge property', function() {
+      var result = freebox.login()
+
+      result.then(function(value) {
+        expect(value.result).to.have.a.property("challenge")
+      })
+    })
+
+  })
+
 })
