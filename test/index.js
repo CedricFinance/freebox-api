@@ -264,4 +264,78 @@ describe('Freebox', function() {
 
   })
 
+  describe('#openSession', function() {
+
+    beforeEach(function() {
+      nock("http://mafreebox.freebox.fr")
+        .post("/api/v3/login/session", { app_id: "fr.freebox.testapp", password: "password" })
+        .reply(200, {
+          "success": true,
+          "result" : {
+                "session_token" : "35JYdQSvkcBYK84IFMU7H86clfhS75OzwlQrKlQN1gBch\/Dd62RGzDpgC7YB9jB2",
+                "challenge":"jdGL6CtuJ3Dm7p9nkcIQ8pjB+eLwr4Ya",
+                "permissions": {
+                      "downloader": true,
+                }
+           }
+        });
+    })
+
+    it('should return a fulfilled promise', function() {
+      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+
+      expect(result).to.be.fulfilled
+    })
+
+
+    it('should be an object', function() {
+      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+
+      result.then(function(value) {
+        expect(value).to.be.an("object")
+      })
+    })
+
+    it('should have a success property', function() {
+      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+
+      result.then(function(value) {
+        expect(value).to.have.a.property("success")
+      })
+    })
+
+    it('should have a result property', function() {
+      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+
+      result.then(function(value) {
+        expect(value).to.have.a.property("result")
+      })
+    })
+
+    it('should have a result.session_token property', function() {
+      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+
+      result.then(function(value) {
+        expect(value.result).to.have.a.property("session_token")
+      })
+    })
+
+    it('should have a result.challenge property', function() {
+      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+
+      result.then(function(value) {
+        expect(value.result).to.have.a.property("challenge")
+      })
+    })
+
+    it('should have a result.permissions property', function() {
+      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+
+      result.then(function(value) {
+        expect(value.result).to.have.a.property("permissions")
+      })
+    })
+
+  })
+
 })

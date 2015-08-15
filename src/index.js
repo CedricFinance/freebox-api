@@ -31,4 +31,17 @@ Freebox.prototype.login = function() {
   return rp({ url: this.api_url+'/login', json: true })
 }
 
+Freebox.prototype.openSession = function(params) {
+  var session_params = {
+    app_id: params.app_id,
+    password: params.password
+  }
+  return rp({
+    method: "POST",
+    body: session_params,
+    url: this.api_url+'/login/session',
+    json: true
+  })
+}
+
 module.exports = Freebox;
