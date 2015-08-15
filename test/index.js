@@ -5,14 +5,14 @@ var nock = require('nock')
 
 chai.use(chai_as_promised)
 
-var Freebox = require('../src/index')
+var FreeboxAPI = require('../src/index')
 
-describe('Freebox', function() {
+describe('FreeboxAPI', function() {
 
-  var freebox;
+  var freeboxAPI;
 
   before(function() {
-    freebox = new Freebox({ api_path: "/api/v3" });
+    freeboxAPI = new FreeboxAPI({ api_path: "/api/v3" });
   })
 
   describe('#api_version', function() {
@@ -29,36 +29,36 @@ describe('Freebox', function() {
     })
 
     it('should return a fulfilled promise', function() {
-        expect(freebox.api_version()).to.be.fulfilled;
+        expect(freeboxAPI.api_version()).to.be.fulfilled;
     })
 
     it('should be an object', function() {
-        freebox.api_version().then(function(version) {
+        freeboxAPI.api_version().then(function(version) {
           expect(version).to.be.an("object")
         })
     })
 
     it('should have an api_base_url property', function(done) {
-        freebox.api_version().then(function(version) {
+        freeboxAPI.api_version().then(function(version) {
           expect(version).to.have.a.property("api_base_url")
           done()
         })
     })
 
     it('should have an api_version property', function() {
-        freebox.api_version().then(function(version) {
+        freeboxAPI.api_version().then(function(version) {
           expect(version).to.have.a.property("api_version")
         })
     })
 
     it('should have an device_name property', function() {
-        freebox.api_version().then(function(version) {
+        freeboxAPI.api_version().then(function(version) {
           expect(version).to.have.a.property("device_name")
         })
     })
 
     it('should have an device_type property', function() {
-        freebox.api_version().then(function(version) {
+        freeboxAPI.api_version().then(function(version) {
           expect(version).to.have.a.property("device_type")
         })
     })
@@ -87,13 +87,13 @@ describe('Freebox', function() {
     })
 
     it('should return a fulfilled promise', function() {
-      var result = freebox.authorize(authRequestParams)
+      var result = freeboxAPI.authorize(authRequestParams)
 
       expect(result).to.be.fulfilled
     })
 
     it('should be an object', function() {
-      var result = freebox.authorize(authRequestParams)
+      var result = freeboxAPI.authorize(authRequestParams)
 
       result.then(function(value) {
         expect(value).to.be.an("object")
@@ -101,7 +101,7 @@ describe('Freebox', function() {
     })
 
     it('should have a success property', function() {
-      var result = freebox.authorize(authRequestParams)
+      var result = freeboxAPI.authorize(authRequestParams)
 
       result.then(function(value) {
         expect(value).to.have.a.property("success")
@@ -109,7 +109,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result property', function() {
-      var result = freebox.authorize(authRequestParams)
+      var result = freeboxAPI.authorize(authRequestParams)
 
       result.then(function(value) {
         expect(value).to.have.a.property("result")
@@ -117,7 +117,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result.app_token property', function() {
-      var result = freebox.authorize(authRequestParams)
+      var result = freeboxAPI.authorize(authRequestParams)
 
       result.then(function(value) {
         expect(value.result).to.have.a.property("app_token")
@@ -125,7 +125,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result.track_id property', function() {
-      var result = freebox.authorize(authRequestParams)
+      var result = freeboxAPI.authorize(authRequestParams)
 
       result.then(function(value) {
         expect(value.result).to.have.a.property("track_id")
@@ -150,13 +150,13 @@ describe('Freebox', function() {
     })
 
     it('should return a fulfilled promise', function() {
-      var result = freebox.track_authorization_progress(1)
+      var result = freeboxAPI.track_authorization_progress(1)
 
       expect(result).to.be.fulfilled
     })
 
     it('should be an object', function() {
-      var result = freebox.track_authorization_progress(1)
+      var result = freeboxAPI.track_authorization_progress(1)
 
       result.then(function(value) {
         expect(value).to.be.an("object")
@@ -164,7 +164,7 @@ describe('Freebox', function() {
     })
 
     it('should have a success property', function() {
-      var result = freebox.track_authorization_progress(1)
+      var result = freeboxAPI.track_authorization_progress(1)
 
       result.then(function(value) {
         expect(value).to.have.a.property("success")
@@ -172,7 +172,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result property', function() {
-      var result = freebox.track_authorization_progress(1)
+      var result = freeboxAPI.track_authorization_progress(1)
 
       result.then(function(value) {
         expect(value).to.have.a.property("result")
@@ -180,7 +180,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result.status property', function() {
-      var result = freebox.track_authorization_progress(1)
+      var result = freeboxAPI.track_authorization_progress(1)
 
       result.then(function(value) {
         expect(value.result).to.have.a.property("status")
@@ -188,7 +188,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result.challenge property', function() {
-      var result = freebox.track_authorization_progress(1)
+      var result = freeboxAPI.track_authorization_progress(1)
 
       result.then(function(value) {
         expect(value.result).to.have.a.property("challenge")
@@ -196,7 +196,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result.password_salt property', function() {
-      var result = freebox.track_authorization_progress(1)
+      var result = freeboxAPI.track_authorization_progress(1)
 
       result.then(function(value) {
         expect(value.result).to.have.a.property("password_salt")
@@ -220,13 +220,13 @@ describe('Freebox', function() {
     })
 
     it('should return a fulfilled promise', function() {
-      var result = freebox.login()
+      var result = freeboxAPI.login()
 
       expect(result).to.be.fulfilled
     })
 
     it('should be an object', function() {
-      var result = freebox.login()
+      var result = freeboxAPI.login()
 
       result.then(function(value) {
         expect(value).to.be.an("object")
@@ -234,7 +234,7 @@ describe('Freebox', function() {
     })
 
     it('should have a success property', function() {
-      var result = freebox.login()
+      var result = freeboxAPI.login()
 
       result.then(function(value) {
         expect(value).to.have.a.property("success")
@@ -242,7 +242,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result property', function() {
-      var result = freebox.login()
+      var result = freeboxAPI.login()
 
       result.then(function(value) {
         expect(value).to.have.a.property("result")
@@ -250,7 +250,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result.logged_in property', function() {
-      var result = freebox.login()
+      var result = freeboxAPI.login()
 
       result.then(function(value) {
         expect(value.result).to.have.a.property("logged_in")
@@ -258,7 +258,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result.challenge property', function() {
-      var result = freebox.login()
+      var result = freeboxAPI.login()
 
       result.then(function(value) {
         expect(value.result).to.have.a.property("challenge")
@@ -285,14 +285,14 @@ describe('Freebox', function() {
     })
 
     it('should return a fulfilled promise', function() {
-      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
 
       expect(result).to.be.fulfilled
     })
 
 
     it('should be an object', function() {
-      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
 
       result.then(function(value) {
         expect(value).to.be.an("object")
@@ -300,7 +300,7 @@ describe('Freebox', function() {
     })
 
     it('should have a success property', function() {
-      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
 
       result.then(function(value) {
         expect(value).to.have.a.property("success")
@@ -308,7 +308,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result property', function() {
-      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
 
       result.then(function(value) {
         expect(value).to.have.a.property("result")
@@ -316,7 +316,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result.session_token property', function() {
-      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
 
       result.then(function(value) {
         expect(value.result).to.have.a.property("session_token")
@@ -324,7 +324,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result.challenge property', function() {
-      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
 
       result.then(function(value) {
         expect(value.result).to.have.a.property("challenge")
@@ -332,7 +332,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result.permissions property', function() {
-      var result = freebox.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
 
       result.then(function(value) {
         expect(value.result).to.have.a.property("permissions")
@@ -364,14 +364,14 @@ describe('Freebox', function() {
     })
 
     it('should return a fulfilled promise', function() {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       expect(result).to.be.fulfilled
     })
 
 
     it('should be an object', function(done) {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       result.then(function(value) {
         expect(value).to.be.an("object")
@@ -380,7 +380,7 @@ describe('Freebox', function() {
     })
 
     it('should have a success property', function() {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       result.then(function(value) {
         expect(value).to.have.a.property("success")
@@ -388,7 +388,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result property', function() {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       result.then(function(value) {
         expect(value).to.have.a.property("result")
@@ -396,7 +396,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result property to be an array', function() {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       result.then(function(value) {
         expect(value.result).to.be.an("array")
@@ -404,7 +404,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result[0].id property', function() {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       result.then(function(value) {
         expect(value.result[0]).to.have.a.property("id")
@@ -412,7 +412,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result[0].type property', function() {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       result.then(function(value) {
         expect(value.result[0]).to.have.a.property("type")
@@ -420,7 +420,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result[0].number property', function() {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       result.then(function(value) {
         expect(value.result[0]).to.have.a.property("number")
@@ -428,7 +428,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result[0].duration property', function() {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       result.then(function(value) {
         expect(value.result[0]).to.have.a.property("duration")
@@ -436,7 +436,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result[0].datetime property', function() {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       result.then(function(value) {
         expect(value.result[0]).to.have.a.property("datetime")
@@ -444,7 +444,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result[0].contact_id property', function() {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       result.then(function(value) {
         expect(value.result[0]).to.have.a.property("contact_id")
@@ -452,7 +452,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result[0].line_id property', function() {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       result.then(function(value) {
         expect(value.result[0]).to.have.a.property("line_id")
@@ -460,7 +460,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result[0].name property', function() {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       result.then(function(value) {
         expect(value.result[0]).to.have.a.property("name")
@@ -468,7 +468,7 @@ describe('Freebox', function() {
     })
 
     it('should have a result[0].new property', function() {
-      var result = freebox.call_log(session_token);
+      var result = freeboxAPI.call_log(session_token);
 
       result.then(function(value) {
         expect(value.result[0]).to.have.a.property("new")

@@ -1,5 +1,5 @@
 {
-  "name": "freebox",
+  "name": "freebox-api",
   "version": "0.0.1",
   "description": "Freebox API",
   "main": "index.js",

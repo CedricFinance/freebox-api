@@ -4,17 +4,17 @@ function major_api_version(version) {
   return version.split(".")[0];
 }
 
-function Freebox(params) {
+function FreeboxAPI(params) {
   this.freebox_url = 'http://mafreebox.freebox.fr';
 
   this.api_url = this.freebox_url+params.api_path;
 }
 
-Freebox.prototype.api_version = function() {
+FreeboxAPI.prototype.api_version = function() {
   return rp({ url: this.freebox_url+'/api_version', json: true })
 }
 
-Freebox.prototype.authorize = function(params) {
+FreeboxAPI.prototype.authorize = function(params) {
   return rp({
     method: "POST",
     body: params,
@@ -23,15 +23,15 @@ Freebox.prototype.authorize = function(params) {
   })
 }
 
-Freebox.prototype.track_authorization_progress = function(id) {
+FreeboxAPI.prototype.track_authorization_progress = function(id) {
   return rp({ url: this.api_url+'/login/authorize/'+id, json: true })
 }
 
-Freebox.prototype.login = function(session_token) {
+FreeboxAPI.prototype.login = function(session_token) {
   return rp({ url: this.api_url+'/login', json: true, headers: {'X-Fbx-App-Auth': session_token} })
 }
 
-Freebox.prototype.openSession = function(params) {
+FreeboxAPI.prototype.openSession = function(params) {
   var session_params = {
     app_id: params.app_id,
     password: params.password
@@ -44,8 +44,8 @@ Freebox.prototype.openSession = function(params) {
   })
 }
 
-Freebox.prototype.call_log = function(session_token) {
+FreeboxAPI.prototype.call_log = function(session_token) {
   return rp({ url: this.api_url+'/call/log/', json: true, headers: {'X-Fbx-App-Auth': session_token} })
 }
 
-module.exports = Freebox;
+module.exports = FreeboxAPI;
