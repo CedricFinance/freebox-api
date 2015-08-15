@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha"
   },
-  "author": "",
+  "author": "Cédric Finance <cedric.finance@finandric.com>",
   "license": "ISC",
   "dependencies": {
     "request-promise": "^0.4.3"
