@@ -11,7 +11,7 @@ function FreeboxAPI(params) {
 }
 
 FreeboxAPI.prototype.api_version = function() {
-  return rp({ url: this.freebox_url+'/api_version', json: true })
+  return rp({ url: this.freebox_url+'/api_version', json: true }).promise()
 }
 
 FreeboxAPI.prototype.authorize = function(params) {
@@ -20,15 +20,15 @@ FreeboxAPI.prototype.authorize = function(params) {
     body: params,
     json: true,
     url: this.api_url+'/login/authorize'
-  })
+  }).promise()
 }
 
 FreeboxAPI.prototype.track_authorization_progress = function(id) {
-  return rp({ url: this.api_url+'/login/authorize/'+id, json: true })
+  return rp({ url: this.api_url+'/login/authorize/'+id, json: true }).promise()
 }
 
 FreeboxAPI.prototype.login = function(session_token) {
-  return rp({ url: this.api_url+'/login', json: true, headers: {'X-Fbx-App-Auth': session_token} })
+  return rp({ url: this.api_url+'/login', json: true, headers: {'X-Fbx-App-Auth': session_token} }).promise()
 }
 
 FreeboxAPI.prototype.openSession = function(params) {
@@ -41,11 +41,11 @@ FreeboxAPI.prototype.openSession = function(params) {
     body: session_params,
     url: this.api_url+'/login/session',
     json: true
-  })
+  }).promise()
 }
 
 FreeboxAPI.prototype.call_log = function(session_token) {
-  return rp({ url: this.api_url+'/call/log/', json: true, headers: {'X-Fbx-App-Auth': session_token} })
+  return rp({ url: this.api_url+'/call/log/', json: true, headers: {'X-Fbx-App-Auth': session_token} }).promise()
 }
 
 module.exports = FreeboxAPI;
