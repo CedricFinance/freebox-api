@@ -1,6 +1,6 @@
 {
   "name": "freebox-api",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Freebox API",
   "main": "src/index.js",
   "scripts": {
