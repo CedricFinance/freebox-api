@@ -271,7 +271,7 @@ describe('FreeboxAPI', function() {
 
     beforeEach(function() {
       nock("http://mafreebox.freebox.fr")
-        .post("/api/v3/login/session", { app_id: "fr.freebox.testapp", password: "password" })
+        .post("/api/v3/login/session", { app_id: "fr.freebox.testapp", password: "076268156f0228d3f38139fb53a61f83e656805f" })
         .reply(200, {
           "success": true,
           "result" : {
@@ -285,14 +285,14 @@ describe('FreeboxAPI', function() {
     })
 
     it('should return a fulfilled promise', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
 
       expect(result).to.be.fulfilled
     })
 
 
     it('should be an object', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
 
       result.then(function(value) {
         expect(value).to.be.an("object")
@@ -300,7 +300,7 @@ describe('FreeboxAPI', function() {
     })
 
     it('should have a success property', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
 
       result.then(function(value) {
         expect(value).to.have.a.property("success")
@@ -308,7 +308,7 @@ describe('FreeboxAPI', function() {
     })
 
     it('should have a result property', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
 
       result.then(function(value) {
         expect(value).to.have.a.property("result")
@@ -316,7 +316,7 @@ describe('FreeboxAPI', function() {
     })
 
     it('should have a result.session_token property', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
 
       result.then(function(value) {
         expect(value.result).to.have.a.property("session_token")
@@ -324,7 +324,7 @@ describe('FreeboxAPI', function() {
     })
 
     it('should have a result.challenge property', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
 
       result.then(function(value) {
         expect(value.result).to.have.a.property("challenge")
@@ -332,7 +332,7 @@ describe('FreeboxAPI', function() {
     })
 
     it('should have a result.permissions property', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", password: "password" })
+      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
 
       result.then(function(value) {
         expect(value.result).to.have.a.property("permissions")

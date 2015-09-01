@@ -1,5 +1,7 @@
 var rp = require('request-promise')
 
+var utils = require('./utils')
+
 function major_api_version(version) {
   return version.split(".")[0];
 }
@@ -34,7 +36,7 @@ FreeboxAPI.prototype.login = function(session_token) {
 FreeboxAPI.prototype.openSession = function(params) {
   var session_params = {
     app_id: params.app_id,
-    password: params.password
+    password: utils.hmac_sha1(params.challenge, params.app_token)
   }
   return rp({
     method: "POST",
