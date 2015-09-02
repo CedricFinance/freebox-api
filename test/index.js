@@ -269,76 +269,125 @@ describe('FreeboxAPI', function() {
 
   describe('#openSession', function() {
 
-    beforeEach(function() {
-      nock("http://mafreebox.freebox.fr")
-        .post("/api/v3/login/session", { app_id: "fr.freebox.testapp", password: "076268156f0228d3f38139fb53a61f83e656805f" })
-        .reply(200, {
-          "success": true,
-          "result" : {
-                "session_token" : "35JYdQSvkcBYK84IFMU7H86clfhS75OzwlQrKlQN1gBch\/Dd62RGzDpgC7YB9jB2",
-                "challenge":"jdGL6CtuJ3Dm7p9nkcIQ8pjB+eLwr4Ya",
-                "permissions": {
-                      "downloader": true,
-                }
-           }
+    describe('when successful', function() {
+      beforeEach(function() {
+        nock("http://mafreebox.freebox.fr")
+          .post("/api/v3/login/session", { app_id: "fr.freebox.testapp", password: "076268156f0228d3f38139fb53a61f83e656805f" })
+          .reply(200, {
+            "success": true,
+            "result" : {
+                  "session_token" : "35JYdQSvkcBYK84IFMU7H86clfhS75OzwlQrKlQN1gBch\/Dd62RGzDpgC7YB9jB2",
+                  "challenge":"jdGL6CtuJ3Dm7p9nkcIQ8pjB+eLwr4Ya",
+                  "permissions": {
+                        "downloader": true,
+                  }
+             }
+          });
+      })
+
+      it('should return a fulfilled promise', function() {
+        var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
+
+        expect(result).to.be.fulfilled
+      })
+
+
+      it('should be an object', function() {
+        var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
+
+        result.then(function(value) {
+          expect(value).to.be.an("object")
+        })
+      })
+
+      it('should have a success property', function() {
+        var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
+
+        result.then(function(value) {
+          expect(value).to.have.a.property("success")
+        })
+      })
+
+      it('should have a result property', function() {
+        var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
+
+        result.then(function(value) {
+          expect(value).to.have.a.property("result")
+        })
+      })
+
+      it('should have a result.session_token property', function() {
+        var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
+
+        result.then(function(value) {
+          expect(value.result).to.have.a.property("session_token")
+        })
+      })
+
+      it('should have a result.challenge property', function() {
+        var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
+
+        result.then(function(value) {
+          expect(value.result).to.have.a.property("challenge")
+        })
+      })
+
+      it('should have a result.permissions property', function() {
+        var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
+
+        result.then(function(value) {
+          expect(value.result).to.have.a.property("permissions")
+        })
+      })
+    })
+
+    describe('when failing', function() {
+
+      beforeEach(function() {
+        nock("http://mafreebox.freebox.fr")
+          .post("/api/v3/login/session")
+          .reply(403, {
+            "uid": "a4134b876fd",
+            "success": false,
+            "msg": "Erreur d'authentification de l'application",
+            "result": {
+              "password_salt": "AEagzhER34YDSR35hRklhj854n",
+              "challenge": "n5ityh357H34hzed32gs75"
+            },
+            "error_code": "invalid_token"
+          }
+        );
+      })
+
+      it('should be rejected', function() {
+        var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "invalidappToken" })
+        expect(result).to.be.rejected
+      })
+
+      it('should have success set to false', function() {
+        var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "invalidappToken" })
+        return result.catch(function(result) {
+          expect(result.success).to.be.false
         });
-    })
-
-    it('should return a fulfilled promise', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
-
-      expect(result).to.be.fulfilled
-    })
-
-
-    it('should be an object', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
-
-      result.then(function(value) {
-        expect(value).to.be.an("object")
       })
-    })
 
-    it('should have a success property', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
-
-      result.then(function(value) {
-        expect(value).to.have.a.property("success")
+      it('should have an error message', function() {
+        var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "invalidappToken" })
+        return result.catch(function(result) {
+          expect(result).to.have.property('msg');
+          expect(result.msg).to.equal("Erreur d'authentification de l'application")
+        });
       })
-    })
 
-    it('should have a result property', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
-
-      result.then(function(value) {
-        expect(value).to.have.a.property("result")
+      it('should have an error code', function() {
+        var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "invalidappToken" })
+        return result.catch(function(result) {
+          expect(result).to.have.property('error_code');
+          expect(result.error_code).to.equal('invalid_token');
+        });
       })
+
     })
-
-    it('should have a result.session_token property', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
-
-      result.then(function(value) {
-        expect(value.result).to.have.a.property("session_token")
-      })
-    })
-
-    it('should have a result.challenge property', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
-
-      result.then(function(value) {
-        expect(value.result).to.have.a.property("challenge")
-      })
-    })
-
-    it('should have a result.permissions property', function() {
-      var result = freeboxAPI.openSession({ app_id: "fr.freebox.testapp", challenge: "challenge", app_token: "appToken" })
-
-      result.then(function(value) {
-        expect(value.result).to.have.a.property("permissions")
-      })
-    })
-
   })
 
   describe('#call_log', function() {

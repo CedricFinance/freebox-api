@@ -43,7 +43,9 @@ FreeboxAPI.prototype.openSession = function(params) {
     body: session_params,
     url: this.api_url+'/login/session',
     json: true
-  }).promise()
+  }).catch(function(reason) {
+    return Promise.reject(reason.response.body);
+  })
 }
 
 FreeboxAPI.prototype.call_log = function(session_token) {
