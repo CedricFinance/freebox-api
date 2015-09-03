@@ -593,7 +593,74 @@ describe('FreeboxAPI', function() {
         })
       })
     })
+  })
 
+  describe('#get_connection_config', function() {
+
+    var session_token = 'dumbtoken';
+
+    beforeEach(function() {
+      nock("http://mafreebox.freebox.fr")
+        .get("/api/v3/connection/config/")
+        .reply(200, {
+          "success": true,
+          "result": {
+            "ping": true,
+            "is_secure_pass": false,
+            "remote_access_port": 80,
+            "remote_access": false,
+            "wol": false,
+            "adblock": false,
+            "adblock_not_set": false,
+            "api_remote_access": true,
+            "allow_token_request": true,
+            "remote_access_ip": "312.13.37.42"
+          }
+        });
+    })
+
+    it('should return a fulfilled promise', function() {
+      var result = freeboxAPI.get_connection_config(session_token);
+
+      return expect(result).to.be.fulfilled
+    })
+
+
+    it('should be an object', function() {
+      var result = freeboxAPI.get_connection_config(session_token);
+
+      return result.then(function(value) {
+        expect(value).to.be.an("object")
+      })
+    })
+
+    it('should have a success property', function() {
+      var result = freeboxAPI.get_connection_config(session_token);
+
+      return result.then(function(value) {
+        expect(value).to.have.a.property("success")
+      })
+    })
+
+    it('should have a result property that is an object', function() {
+      var result = freeboxAPI.get_connection_config(session_token);
+
+      return result.then(function(value) {
+        expect(value).to.have.a.property("result")
+        expect(value.result).to.be.an("object")
+      })
+    })
+
+    var properties = ["ping", "is_secure_pass", "remote_access_port", "remote_access", "wol", "adblock", "adblock_not_set", "api_remote_access", "allow_token_request", "remote_access_ip"]
+    properties.forEach(function(property) {
+      it('should have a result.'+property+' property', function() {
+        var result = freeboxAPI.get_connection_config(session_token);
+
+        return result.then(function(value) {
+          expect(value.result).to.have.a.property(property)
+        })
+      })
+    })
   })
 
 })
