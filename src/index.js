@@ -52,4 +52,8 @@ FreeboxAPI.prototype.call_log = function(session_token) {
   return rp({ url: this.api_url+'/call/log/', json: true, headers: {'X-Fbx-App-Auth': session_token} }).promise()
 }
 
+FreeboxAPI.prototype.get_connection_status = function(session_token) {
+  return rp({ url: this.api_url+'/connection/', json: true, headers: {'X-Fbx-App-Auth': session_token} }).promise()
+}
+
 module.exports = FreeboxAPI;

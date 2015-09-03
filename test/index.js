@@ -526,4 +526,74 @@ describe('FreeboxAPI', function() {
 
   })
 
+  describe('#get_connection_status', function() {
+
+    var session_token = 'dumbtoken';
+
+    beforeEach(function() {
+      nock("http://mafreebox.freebox.fr")
+        .get("/api/v3/connection/")
+        .reply(200, {
+          "success": true,
+          "result": {
+            "type": "ethernet",
+            "rate_down": 61,
+            "bytes_up": 5489542,
+            "rate_up": 0,
+            "bandwidth_up": 100000000,
+            "ipv4": "13.37.42.42",
+            "ipv6": "2a01:e30:d252:a2a0::1",
+            "bandwidth_down": 100000000,
+            "state": "up",
+            "bytes_down": 13332830,
+            "media": "ftth"
+          }
+        });
+    })
+
+    it('should return a fulfilled promise', function() {
+      var result = freeboxAPI.get_connection_status(session_token);
+
+      return expect(result).to.be.fulfilled
+    })
+
+
+    it('should be an object', function() {
+      var result = freeboxAPI.get_connection_status(session_token);
+
+      return result.then(function(value) {
+        expect(value).to.be.an("object")
+      })
+    })
+
+    it('should have a success property', function() {
+      var result = freeboxAPI.get_connection_status(session_token);
+
+      return result.then(function(value) {
+        expect(value).to.have.a.property("success")
+      })
+    })
+
+    it('should have a result property that is an object', function() {
+      var result = freeboxAPI.get_connection_status(session_token);
+
+      return result.then(function(value) {
+        expect(value).to.have.a.property("result")
+        expect(value.result).to.be.an("object")
+      })
+    })
+
+    var properties = ["type", "rate_down", "bytes_up", "rate_up", "bandwidth_up", "ipv4", "ipv6", "bandwidth_down", "state", "bytes_down", "media"]
+    properties.forEach(function(property) {
+      it('should have a result.'+property+' property', function() {
+        var result = freeboxAPI.get_connection_status(session_token);
+
+        return result.then(function(value) {
+          expect(value.result).to.have.a.property(property)
+        })
+      })
+    })
+
+  })
+
 })
