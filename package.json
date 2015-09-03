@@ -9,7 +9,8 @@
   "author": "Cédric Finance <cedric.finance@finandric.com>",
   "license": "ISC",
   "dependencies": {
-    "request-promise": "^0.4.3"
+    "request-promise": "^0.4.3",
+    "bluebird": "^2.9.34"
   },
   "devDependencies": {
     "chai": "^3.2.0",

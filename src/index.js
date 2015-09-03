@@ -1,4 +1,5 @@
 var rp = require('request-promise')
+var Promise = require('bluebird')
 
 var utils = require('./utils')
 
