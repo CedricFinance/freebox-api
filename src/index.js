@@ -3,10 +3,6 @@ var Promise = require('bluebird')
 
 var utils = require('./utils')
 
-function major_api_version(version) {
-  return version.split(".")[0];
-}
-
 function FreeboxAPI(params) {
   this.freebox_url = 'http://mafreebox.freebox.fr';
 
