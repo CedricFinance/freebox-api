@@ -732,4 +732,104 @@ describe('FreeboxAPI', function() {
     })
   })
 
+  describe('#get_connection_xdsl_status', function() {
+
+    var session_token = 'dumbtoken';
+
+    beforeEach(function() {
+      nock("http://mafreebox.freebox.fr")
+        .get("/api/v3/connection/xdsl/")
+        .reply(200, {
+          "success": true,
+          "result": {
+            "status": {
+              "status": "showtime",
+              "protocol": "adsl2plus_a",
+              "uptime": 5017,
+              "modulation": "adsl"
+            },
+            "down": {
+              "es": 43,
+              "phyr": true,
+              "attn": 0,
+              "snr": 7,
+              "nitro": true,
+              "rate": 28031,
+              "hec": 0,
+              "crc": 0,
+              "rxmt_uncorr": 0,
+              "rxmt_corr": 0,
+              "ses": 43,
+              "fec": 0,
+              "maxrate": 30636,
+              "rxmt": 0
+            },
+            "up": {
+              "es": 0,
+              "phyr": false,
+              "attn": 23,
+              "snr": 15,
+              "nitro": true,
+              "rate": 1022,
+              "hec": 0,
+              "crc": 0,
+              "rxmt_uncorr": 0,
+              "rxmt_corr": 0,
+              "ses": 0,
+              "fec": 0,
+              "maxrate": 1022,
+              "rxmt": 0
+            }
+          }
+        });
+    })
+
+    it('should return a fulfilled promise', function() {
+      var result = freeboxAPI.get_connection_xdsl_status(session_token);
+
+      return expect(result).to.be.fulfilled
+    })
+
+
+    it('should be an object', function() {
+      var result = freeboxAPI.get_connection_xdsl_status(session_token);
+
+      return result.then(function(value) {
+        expect(value).to.be.an("object")
+      })
+    })
+
+    it('should have a result property that is an object', function() {
+      var result = freeboxAPI.get_connection_xdsl_status(session_token);
+
+      return result.then(function(value) {
+        expect(value.result).to.be.an("object")
+      })
+    })
+
+    function prefixWith(prefix) {
+      return function(prop) { return prefix+prop; };
+    }
+
+    var status_properties = ["status", "protocol", "uptime", "modulation"];
+    var xdsl_properties = ["phyr", "attn", "snr", "nitro", "rate", "hec", "crc", "rxmt_uncorr", "rxmt_corr", "ses", "fec", "maxrate", "rxmt"]
+    var properties = ["success", "result"];
+    properties.push("result.status");
+    properties = properties.concat(status_properties.map(prefixWith("result.status.")));
+    properties.push("result.down");
+    properties = properties.concat(xdsl_properties.map(prefixWith("result.down.")));
+    properties.push("result.up");
+    properties = properties.concat(xdsl_properties.map(prefixWith("result.up.")));
+
+    properties.forEach(function(property) {
+      it('should have a '+property+' property', function() {
+        var result = freeboxAPI.get_connection_xdsl_status(session_token);
+
+        return result.then(function(value) {
+          expect(value).to.have.a.deep.property(property)
+        })
+      })
+    })
+  })
+
 })
