@@ -57,4 +57,8 @@ FreeboxAPI.prototype.get_connection_config = function(session_token) {
   return rp({ url: this.api_url+'/connection/config/', json: true, headers: {'X-Fbx-App-Auth': session_token} }).promise()
 }
 
+FreeboxAPI.prototype.get_ipv6_connection_config = function(session_token) {
+  return rp({ url: this.api_url+'/connection/ipv6/config/', json: true, headers: {'X-Fbx-App-Auth': session_token} }).promise()
+}
+
 module.exports = FreeboxAPI;

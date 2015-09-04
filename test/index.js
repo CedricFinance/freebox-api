@@ -663,4 +663,73 @@ describe('FreeboxAPI', function() {
     })
   })
 
+  describe('#get_ipv6_connection_config', function() {
+
+    var session_token = 'dumbtoken';
+
+    beforeEach(function() {
+      nock("http://mafreebox.freebox.fr")
+        .get("/api/v3/connection/ipv6/config/")
+        .reply(200, {
+          "success": true,
+          "result": {
+            "ipv6_enabled": true,
+            "delegations": [
+              {
+                "prefix": "2a01:e30:d252:a2a0::/64",
+                "next_hop": ""
+              },
+              {
+                "prefix": "2a01:e30:d252:a2a1::/64",
+                "next_hop": ""
+              }
+            ]
+          }
+        });
+    })
+
+    it('should return a fulfilled promise', function() {
+      var result = freeboxAPI.get_ipv6_connection_config(session_token);
+
+      return expect(result).to.be.fulfilled
+    })
+
+
+    it('should be an object', function() {
+      var result = freeboxAPI.get_ipv6_connection_config(session_token);
+
+      return result.then(function(value) {
+        expect(value).to.be.an("object")
+      })
+    })
+
+    it('should have a success property', function() {
+      var result = freeboxAPI.get_ipv6_connection_config(session_token);
+
+      return result.then(function(value) {
+        expect(value).to.have.a.property("success")
+      })
+    })
+
+    it('should have a result property that is an object', function() {
+      var result = freeboxAPI.get_ipv6_connection_config(session_token);
+
+      return result.then(function(value) {
+        expect(value).to.have.a.property("result")
+        expect(value.result).to.be.an("object")
+      })
+    })
+
+    var properties = ["ipv6_enabled", "delegations"]
+    properties.forEach(function(property) {
+      it('should have a result.'+property+' property', function() {
+        var result = freeboxAPI.get_ipv6_connection_config(session_token);
+
+        return result.then(function(value) {
+          expect(value.result).to.have.a.property(property)
+        })
+      })
+    })
+  })
+
 })
