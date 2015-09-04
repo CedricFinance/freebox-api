@@ -7,6 +7,10 @@ chai.use(chai_as_promised)
 
 var FreeboxAPI = require('../src/index')
 
+function prefixWith(prefix) {
+  return function(prop) { return prefix+prop; };
+}
+
 describe('FreeboxAPI', function() {
 
   var freeboxAPI;
@@ -807,10 +811,6 @@ describe('FreeboxAPI', function() {
       })
     })
 
-    function prefixWith(prefix) {
-      return function(prop) { return prefix+prop; };
-    }
-
     var status_properties = ["status", "protocol", "uptime", "modulation"];
     var xdsl_properties = ["phyr", "attn", "snr", "nitro", "rate", "hec", "crc", "rxmt_uncorr", "rxmt_corr", "ses", "fec", "maxrate", "rxmt"]
     var properties = ["success", "result"];
@@ -824,6 +824,68 @@ describe('FreeboxAPI', function() {
     properties.forEach(function(property) {
       it('should have a '+property+' property', function() {
         var result = freeboxAPI.get_connection_xdsl_status(session_token);
+
+        return result.then(function(value) {
+          expect(value).to.have.a.deep.property(property)
+        })
+      })
+    })
+  })
+
+  describe('#get_connection_ftth_status', function() {
+
+    var session_token = 'dumbtoken';
+
+    beforeEach(function() {
+      nock("http://mafreebox.freebox.fr")
+        .get("/api/v3/connection/ftth/")
+        .reply(200, {
+          "success": true,
+          "result": {
+            "sfp_has_power_report": true,
+            "sfp_has_signal": false,
+            "sfp_model": "SPBD-1250E4H2RDB",
+            "sfp_vendor": "DELTA",
+            "sfp_pwr_tx": -1172,
+            "sfp_pwr_rx": -3698,
+            "link": false,
+            "sfp_alim_ok": true,
+            "sfp_serial": "DE104900000471",
+            "sfp_present": true
+          }
+        });
+    })
+
+    it('should return a fulfilled promise', function() {
+      var result = freeboxAPI.get_connection_ftth_status(session_token);
+
+      return expect(result).to.be.fulfilled
+    })
+
+
+    it('should be an object', function() {
+      var result = freeboxAPI.get_connection_ftth_status(session_token);
+
+      return result.then(function(value) {
+        expect(value).to.be.an("object")
+      })
+    })
+
+    it('should have a result property that is an object', function() {
+      var result = freeboxAPI.get_connection_ftth_status(session_token);
+
+      return result.then(function(value) {
+        expect(value.result).to.be.an("object")
+      })
+    })
+
+    var ftth_properties = ["sfp_has_power_report", "sfp_has_signal", "sfp_model", "sfp_vendor", "sfp_pwr_tx", "sfp_pwr_rx", "link", "sfp_alim_ok", "sfp_serial", "sfp_present"];
+    var properties = ["success", "result"];
+    properties = properties.concat(ftth_properties.map(prefixWith("result.")));
+
+    properties.forEach(function(property) {
+      it('should have a '+property+' property', function() {
+        var result = freeboxAPI.get_connection_ftth_status(session_token);
 
         return result.then(function(value) {
           expect(value).to.have.a.deep.property(property)
